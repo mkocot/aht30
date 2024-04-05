@@ -80,7 +80,9 @@ typedef struct aht30_handle_s
     uint8_t (*iic_read_cmd)(uint8_t addr, uint8_t *buf, uint16_t len);         /**< point to an iic_read_cmd function address */
     uint8_t (*iic_write_cmd)(uint8_t addr, uint8_t *buf, uint16_t len);        /**< point to an iic_write_cmd function address */
     void (*delay_ms)(uint32_t ms);                                             /**< point to a delay_ms function address */
+#ifdef DRIVER_AHT30_HAS_DEBUG_PRINT
     void (*debug_print)(const char *const fmt, ...);                           /**< point to a debug_print function address */
+#endif
     uint8_t inited;                                                            /**< inited flag */
 } aht30_handle_t;
 
@@ -159,6 +161,7 @@ typedef struct aht30_info_s
  */
 #define DRIVER_AHT30_LINK_DELAY_MS(HANDLE, FUC)        (HANDLE)->delay_ms = FUC
 
+#ifdef DRIVER_AHT30_HAS_DEBUG_PRINT
 /**
  * @brief     link debug_print function
  * @param[in] HANDLE points to an aht30 handle structure
@@ -166,6 +169,9 @@ typedef struct aht30_info_s
  * @note      none
  */
 #define DRIVER_AHT30_LINK_DEBUG_PRINT(HANDLE, FUC)     (HANDLE)->debug_print = FUC
+#else
+#define DRIVER_AHT30_LINK_DEBUG_PRINT(HANDLE, FUC)     do{}while(0)
+#endif
 
 /**
  * @}
